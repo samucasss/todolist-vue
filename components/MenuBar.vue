@@ -42,7 +42,7 @@
 
           <b-nav-item-dropdown right>
             <template #button-content>
-              <em>{{ userName }}</em>
+              <em>{{ loggedInUser.nome.toUpperCase() }}</em>
             </template>
             <b-dropdown-item href="/usuarios/AlterarForm"
               >Meus dados</b-dropdown-item

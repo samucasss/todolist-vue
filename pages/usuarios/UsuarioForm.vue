@@ -60,15 +60,15 @@
 </template>
 
 <script>
-import { Usuario } from "@/models/Usuario";
+import { Usuario } from '@/models/Usuario'
 
 export default {
-  name: "UsuarioForm",
+  name: 'UsuarioForm',
   props: {
     usuario: Usuario,
     title: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
@@ -76,104 +76,107 @@ export default {
       usuarioEdit: new Usuario(),
       breadcrumbList: [this.title],
       optionsAlert: {
-        message: "",
-        variant: "success",
+        message: '',
+        variant: 'success',
         timer: 0,
       },
       buttonOk: {
-        label: "OK",
-        variant: "primary",
+        label: 'OK',
+        variant: 'primary',
       },
-    };
+    }
   },
   beforeMount() {
-    Object.assign(this.usuarioEdit, this.usuario);
+    Object.assign(this.usuarioEdit, this.usuario)
   },
   methods: {
     success() {
       this.optionsAlert = {
-        message: "Operação realizada com sucesso",
-        variant: "success",
+        message: 'Operação realizada com sucesso',
+        variant: 'success',
         timer: 5,
-      };
+      }
     },
     error(msg) {
-      this.optionsAlert = { message: msg, variant: "danger", timer: 5 };
+      this.optionsAlert = { message: msg, variant: 'danger', timer: 5 }
     },
     validate() {
       if (!this.usuarioEdit.nome) {
-        this.error("Favor informar o campo Nome");
-        return false;
+        this.error('Favor informar o campo Nome')
+        return false
       }
 
       if (!this.usuarioEdit.email) {
-        this.error("Favor informar o campo E-mail");
-        return false;
+        this.error('Favor informar o campo E-mail')
+        return false
       }
 
-      const pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+      const pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
       if (!pattern.test(this.usuarioEdit.email)) {
-        this.error("E-mail inválido");
-        return false;
+        this.error('E-mail inválido')
+        return false
       }
 
       if (!this.usuarioEdit.senha) {
-        this.error("Favor informar o campo Senha");
-        return false;
+        this.error('Favor informar o campo Senha')
+        return false
       }
 
-      return true;
+      return true
     },
     async save() {
       if (!this.validate()) {
-        return false;
+        return false
       }
 
-      this.buttonOk = { label: "Aguarde ...", variant: "warning" };
+      this.buttonOk = { label: 'Aguarde ...', variant: 'warning' }
 
       try {
-        // registra o usuario
-        await this.$axios.post("/api/usuarios", this.usuarioEdit);
-        this.success();
-
-        // loga o usuario caso nao seja edicao
         if (!this.usuario.id) {
-          await this.$auth.loginWith("local", {
+          // registra o usuario
+          await this.$axios.post('/api/auth/register', this.usuarioEdit)
+          this.success()
+
+          // loga o usuario caso nao seja edicao
+          await this.$auth.loginWith('local', {
             data: {
               email: this.usuarioEdit.email,
               senha: this.usuarioEdit.senha,
             },
-          });
+          })
+        } else {
+          // altera o usuario logado
+          await this.$axios.post('/api/usuario', this.usuarioEdit)
+          this.success()
         }
-
       } catch (e) {
-        this.error("Erro ao salvar usuario");
+        this.error('Erro ao salvar usuario')
       }
 
-      this.buttonOk = { label: "OK", variant: "primary" };
+      this.buttonOk = { label: 'OK', variant: 'primary' }
     },
     remove() {
       this.$bvModal
-        .msgBoxConfirm("Tem certeza que deseja excluir seu registro?")
+        .msgBoxConfirm('Tem certeza que deseja excluir seu registro?')
         .then((value) => {
           if (value) {
-            this.removeUsuario();
+            this.removeUsuario()
           }
         })
         .catch((err) => {
-          window.console.log("Erro na confirmacao: " + err);
-        });
+          window.console.log('Erro na confirmacao: ' + err)
+        })
     },
     async removeUsuario() {
       try {
-        await this.$axios.delete("/api/usuario/");
-        this.success();
+        await this.$axios.delete('/api/usuario/')
+        this.success()
 
-        await this.$auth.logout();
+        await this.$auth.logout()
       } catch (e) {
-        this.error("Erro ao remover usuario");
+        this.error('Erro ao remover usuario')
       }
     },
   },
-};
+}
 </script>
