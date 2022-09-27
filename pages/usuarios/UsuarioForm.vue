@@ -144,6 +144,9 @@ export default {
               senha: this.usuarioEdit.senha,
             },
           })
+
+          this.$router.push("/tarefas/TarefaList");
+
         } else {
           // altera o usuario logado
           await this.$axios.post('/api/usuario', this.usuarioEdit)

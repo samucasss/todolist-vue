@@ -110,6 +110,8 @@ export default {
         this.preferencias.setJson(result.data)
 
         this.success()
+        this.$router.push("/tarefas/TarefaList");
+
       } catch (e) {
         this.error('Erro ao salvar preferencias')
       }
@@ -134,6 +136,7 @@ export default {
         await this.$axios.delete('/api/preferencia')
         this.preferencias = new Preferencias()
         this.success()
+        this.$router.push("/tarefas/TarefaList");
 
         this.buttonExcluir = { label: 'OK', variant: 'primary' }
       } catch (e) {

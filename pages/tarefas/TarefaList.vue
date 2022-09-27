@@ -28,7 +28,7 @@
     />
 
     <b-row v-if="!tarefaManager.edit && !$route.query.search">
-      <b-col cols="6">
+      <b-col cols="4">
         <b-button
           v-if="!tarefaManager.edit"
           v-b-tooltip.hover
@@ -157,7 +157,7 @@ export default {
     async findAllTarefas() {
       try {
         // recupera as tarefas dessa semana
-        const periodo = this.findPeriodoEssaSemana()
+        const periodo = this.findPeriodoAllTarefas()
         const result = await this.$axios.get('/api/tarefas', {
           params: periodo,
         })
@@ -168,15 +168,13 @@ export default {
         this.error('Erro ao recuperar tarefas')
       }
     },
-    findPeriodoEssaSemana() {
+    findPeriodoAllTarefas() {
       const hoje = moment().startOf('day')
-      const domingo = moment(hoje).isoWeekday(0)
-      const sabado = moment(hoje).isoWeekday(6)
 
-      const ultimoSabado = moment(domingo).add(-1, 'days')
-      const proximoDomingo = moment(sabado).add(1, 'days')
+      const start = moment(hoje).add(-10, 'days')
+      const end = moment(hoje).add(10, 'days')
 
-      return { inicio: ultimoSabado, fim: proximoDomingo }
+      return { inicio: start, fim: end }
     },
     async findPreferencias() {
       try {

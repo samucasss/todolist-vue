@@ -100,7 +100,7 @@ export default {
             }
         });
 
-        this.$router.push("/");
+        this.$router.push("/tarefas/TarefaList");
 
       } catch (e) {
         this.error('Erro: ' + e.response.data.msg);
