@@ -1,6 +1,6 @@
 # ToDoList Vue
 
-Implementação do frontend da aplicação ToDoList com Vue. Tecnologias utilizadas: Vue com Bootstrap components, Nuxt, Axios e JWT authentication.
+Implementação do frontend da aplicação ToDoList com Vue. Tecnologias utilizadas: Vue 2.6 com Bootstrap components, Nuxt 2.15 e JWT authentication.
 
 Aplicação ToDoList:
 
